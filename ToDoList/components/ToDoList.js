@@ -1,43 +1,39 @@
-import React, { useState } from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import "react-native-get-random-values";
+import { v4 as uuidv4 } from 'uuid';
+import React, { useState } from "react";
+import { View, Text, Button, StyleSheet } from "react-native";
+import AddTask from "./AddTask";
 
-const ToDoList = ({ tasks, onAddTask }) => {
-  const [toDos, setToDos] = useState(
-    tasks.map((title, index) => ({ id: index.toString(), title }))
-  );
+export default function ToDoList({ taskTitles }) {
+    const initialList = taskTitles.map((title) => ({
+            title: title,
+            id: uuidv4(),
+        }));
+    const [toDos, setToDos] = useState(initialList);
 
-  const addToDo = (newTitle) => {
-    setToDos((prevToDos) => [
-      ...prevToDos,
-      { id: (prevToDos.length + 1).toString(), title: newTitle },
-    ]);
-  };
+    function addToDo(newTitle) {
+        setToDos([...toDos, { title: newTitle, id: uuidv4() }]);
+    }
 
-  const removeToDo = (id) => {
-    setToDos((prevToDos) => prevToDos.filter((toDo) => toDo.id !== id));
-  };
+    function removeToDo(id) {
+        setToDos(toDos.filter((todo) => todo.id !== id));
+    }
 
-  return (
-    <View style={styles.container}>
-      <Text style={styles.header}>To-Do List</Text>
-      {toDos.map((toDo) => (
-        <View key={toDo.id} style={styles.taskContainer}>
-          <Text style={styles.taskItem}>{toDo.title}</Text>
-          <Button
-            title="Remove"
-            onPress={() => removeToDo(toDo.id)}
-            color="#ff3d3d"
-          />
+    return (
+        <View style={styles.todoListContainer}>
+            {toDos.map((todo) => (
+                <View key={todo.id} style={styles.todoItem}>
+                    <Text>{todo.title}</Text>
+                    <Button 
+                        onPress={() => removeToDo(todo.id)}
+                        title="Delete" 
+                    />
+                </View>
+            ))}
+            <AddTask onAddTask={addToDo} />
         </View>
-      ))}
-      <Button title="Add Task" onPress={() => onAddTask("New Task")} /> 
-    </View>
-  );
-};
-
-ToDoList.defaultProps = {
-  tasks: [],
-};
+    );
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -60,5 +56,3 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
-
-export default ToDoList;

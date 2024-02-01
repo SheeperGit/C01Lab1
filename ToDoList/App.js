@@ -2,21 +2,17 @@ import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import ToDoList from './components/ToDoList';
-import AddTask from './components/AddTask';
 
 export default function App() {
-  const [tasks, setTasks] = useState(["Task1", "Task2", "Task3"]); // Tester Tasks!
-
-  const handleAddTask = (newTitle) => {
-    <AddTask onAddTask={handleAddTask} />
-    setTasks((prevTasks) => [...prevTasks, newTitle]);
-  };
-  
-
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <ToDoList tasks={tasks} />
+      <Text style={{ fontSize: 50 }}>To-Do List</Text>
+      <ToDoList 
+        taskTitles={[
+          "Fix C01Lab1", 
+          "Complete C01 Deliverable 1", 
+          "Pet cat"]}
+      />
       <StatusBar style="auto" />
     </View>
   );

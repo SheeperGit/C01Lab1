@@ -1,44 +1,41 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet } from 'react-native';
 
-const AddTask = ({ onAddTask }) => {
-  const [title, setTitle] = useState('');
+export default function AddTask({ onAddTask }) {
+  const [newTaskTitle, setNewTaskTitle] = useState("");
 
-  const handleAddTask = () => {
-    const trimmedTitle = title.trim();
-    if (trimmedTitle !== '') {
+  function handleAddTask() {
+      const trimmedTitle = newTaskTitle.trim();
+      if (trimmedTitle === "") {
+        return;
+      }
+
       onAddTask(trimmedTitle);
-      setTitle('');
-    }
-  };
+      setNewTaskTitle("");
+  }
 
   return (
-    <View style={styles.container}>
-      <TextInput
-        style={styles.input}
-        value={title}
-        onChangeText={(text) => setTitle(text)}
-        placeholder="Enter task title"
-      />
-      <Button title="Add Task" onPress={handleAddTask} />
-    </View>
-  );
-};
+      <View style={styles.addTodoForm}>
+          <TextInput
+              style={styles.input}
+              placeholder="New task title"
+              value={newTaskTitle}
+              onChangeText={setNewTaskTitle}
+          />
+          <Button onPress={handleAddTask} title="Add" />
+      </View>
+  )
+}
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 16,
+  addTodoForm: {
+    margin: 10,
   },
   input: {
-    flex: 1,
-    marginRight: 8,
+    height: 40,
+    borderColor: 'gray',
     borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 4,
-    paddingHorizontal: 8,
+    marginBottom: 10,
+    paddingHorizontal: 10,
   },
 });
-
-export default AddTask;
